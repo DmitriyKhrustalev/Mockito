@@ -1,30 +1,40 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class MovieManager {
 
-    private final List<String> movies = new ArrayList<>();
+    private String[] movies;
+    private int size;
     private final int limit;
 
     public MovieManager() {
         this.limit = 5;
+        this.movies = new String[0];
+        this.size = 0;
     }
 
     public MovieManager(int limit) {
         this.limit = limit;
-    }
-    public void addMovie(String movie) {
-        movies.add(movie);
+        this.movies = new String[0];
+        this.size = 0;
     }
 
-    public List<String> findAll() {
-        return new ArrayList<>(movies);
+    public void addMovie(String movie) {
+        if (size == movies.length) {
+            movies = Arrays.copyOf(movies, size + 1);
+        }
+        movies[size] = movie;
+        size++;
     }
-    public List<String> findLast() {
-        int resultLength = Math.min(limit, movies.size());
-        List<String> result = new ArrayList<>();
+
+    public String[] findAll() {
+        return Arrays.copyOf(movies, size);
+    }
+
+    public String[] findLast() {
+        int resultLength = Math.min(limit, size);
+        String[] result = new String[resultLength];
         for (int i = 0; i < resultLength; i++) {
-            result.add(movies.get(movies.size() - 1 - i));
+            result[i] = movies[size - 1 - i];
         }
         return result;
     }
@@ -38,7 +48,7 @@ public class MovieManager {
         manager.addMovie("Movie 4");
         manager.addMovie("Movie 5");
 
-        System.out.println("All movies: " + manager.findAll());
-        System.out.println("Last movies: " + manager.findLast());
+        System.out.println("All movies: " + Arrays.toString(manager.findAll()));
+        System.out.println("Last movies: " + Arrays.toString(manager.findLast()));
     }
 }
